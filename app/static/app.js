@@ -187,9 +187,16 @@ userForm.addEventListener("submit", async (event) => {
         email: formData.get("email"),
       }),
     });
-    userResult.textContent = `Created ${user.name} with user ID ${user.id} and wallet ${formatCurrency(user.wallet.balance)}.`;
-    setSelectedUser(user);
-    await loadDashboard();
+    const hasActiveSelection = Boolean(state.selectedUserId);
+    if (!hasActiveSelection) {
+      setSelectedUser(user);
+      await loadDashboard();
+      userResult.textContent = `Created ${user.name} with user ID ${user.id} and wallet ${formatCurrency(user.wallet.balance)}. This user is now selected.`;
+    } else {
+      orderUserIdInput.value = String(user.id);
+      userResult.textContent = `Created ${user.name} with user ID ${user.id} and wallet ${formatCurrency(user.wallet.balance)}. Current preview user was kept unchanged.`;
+      await loadMarket();
+    }
     userForm.reset();
   } catch (error) {
     userResult.textContent = error.message;
