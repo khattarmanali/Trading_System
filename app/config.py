@@ -58,6 +58,10 @@ class Settings(BaseSettings):
                 self.database_url = (
                     "mysql+pymysql://trader:trader@localhost:3306/trading_system"
                 )
+        elif self.database_url.startswith("mysql://"):
+            self.database_url = self.database_url.replace(
+                "mysql://", "mysql+pymysql://", 1
+            )
 
         if not self.redis_url:
             if self.redishost:
