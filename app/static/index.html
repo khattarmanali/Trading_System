@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Trading System Dashboard</title>
+    <link rel="stylesheet" href="/static/styles.css" />
+  </head>
+  <body>
+    <div class="page-shell">
+      <header class="hero">
+        <div>
+          <p class="eyebrow">Backend Interview Task</p>
+          <h1>Trading System Dashboard</h1>
+          <p class="hero-copy">
+            Basic frontend for user onboarding, market orders, portfolio tracking,
+            order history, and WebSocket execution updates.
+          </p>
+        </div>
+        <div class="hero-card">
+          <div class="metric-label">Selected User</div>
+          <div id="selected-user" class="metric-value">None</div>
+          <div id="wallet-balance" class="metric-subvalue">Wallet: --</div>
+          <button id="refresh-all" class="secondary-button">Refresh Dashboard</button>
+        </div>
+      </header>
+
+      <main class="grid">
+        <section class="panel">
+          <div class="panel-header">
+            <h2>Create User</h2>
+            <p>Creates a trading user and wallet with starting balance.</p>
+          </div>
+          <form id="user-form" class="stack">
+            <label>
+              Name
+              <input id="user-name" name="name" placeholder="Aarav Mehta" required />
+            </label>
+            <label>
+              Email
+              <input
+                id="user-email"
+                name="email"
+                type="email"
+                placeholder="aarav@example.com"
+                required
+              />
+            </label>
+            <button type="submit">Create User</button>
+          </form>
+          <div id="user-result" class="result-box muted">No user created yet.</div>
+        </section>
+
+        <section class="panel">
+          <div class="panel-header">
+            <h2>Place Order</h2>
+            <p>Market orders execute instantly at the latest Redis price.</p>
+          </div>
+          <form id="order-form" class="stack">
+            <label>
+              User ID
+              <input id="order-user-id" name="user_id" type="number" min="1" required />
+            </label>
+            <label>
+              Symbol
+              <select id="order-symbol" name="symbol">
+                <option>SBIN</option>
+                <option>RELIANCE</option>
+                <option>TCS</option>
+                <option>INFY</option>
+                <option>HDFCBANK</option>
+              </select>
+            </label>
+            <label>
+              Quantity
+              <input id="order-qty" name="qty" type="number" min="1" value="1" required />
+            </label>
+            <label>
+              Side
+              <select id="order-side" name="side">
+                <option value="BUY">BUY</option>
+                <option value="SELL">SELL</option>
+              </select>
+            </label>
+            <button type="submit">Execute Order</button>
+          </form>
+          <div id="order-result" class="result-box muted">No orders placed yet.</div>
+        </section>
+
+        <section class="panel">
+          <div class="panel-header">
+            <h2>Live Market</h2>
+            <p>Prices are fetched from Redis-backed API data.</p>
+          </div>
+          <div id="market-grid" class="market-grid"></div>
+        </section>
+
+        <section class="panel">
+          <div class="panel-header">
+            <h2>Portfolio</h2>
+            <p>Open positions with current price and unrealized PnL.</p>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Symbol</th>
+                  <th>Qty</th>
+                  <th>Avg Price</th>
+                  <th>Current Price</th>
+                  <th>Unrealized PnL</th>
+                </tr>
+              </thead>
+              <tbody id="portfolio-body">
+                <tr><td colspan="5" class="empty-cell">Select or create a user.</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="panel panel-wide">
+          <div class="panel-header">
+            <h2>Order History</h2>
+            <p>Executed orders for the selected user.</p>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Symbol</th>
+                  <th>Qty</th>
+                  <th>Side</th>
+                  <th>Price</th>
+                  <th>Status</th>
+                  <th>Created At</th>
+                </tr>
+              </thead>
+              <tbody id="orders-body">
+                <tr><td colspan="7" class="empty-cell">No orders loaded.</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="panel panel-wide">
+          <div class="panel-header">
+            <h2>WebSocket Events</h2>
+            <p>Real-time order execution feed for the selected user.</p>
+          </div>
+          <div id="events-feed" class="events-feed">
+            <div class="event-item muted">No WebSocket events yet.</div>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <script src="/static/app.js"></script>
+  </body>
+</html>
