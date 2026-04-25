@@ -62,6 +62,38 @@ docker compose up --build
 - ReDoc: [http://localhost:8000/redoc](http://localhost:8000/redoc)
 - Frontend dashboard: [http://localhost:8000/](http://localhost:8000/)
 
+## Run Without Docker
+
+Use Python `3.12` or `3.13`.
+
+1. Create and activate a virtual environment:
+
+```bash
+python3.12 -m venv .venv
+source .venv/bin/activate
+```
+
+2. Install dependencies:
+
+```bash
+pip install -r requirements.txt
+```
+
+3. Set local environment variables in `.env`:
+
+```env
+APP_NAME=Trading System API
+DEBUG=false
+DATABASE_URL=mysql+pymysql://trader:trader@localhost:3306/trading_system
+REDIS_URL=redis://localhost:6379/0
+```
+
+4. Start the app:
+
+```bash
+python run.py
+```
+
 ## Deploy
 
 Recommended platform: Railway, because its official templates support FastAPI app services plus MySQL and Redis in the same project.
